@@ -387,13 +387,14 @@ class mdDateTimePicker {
 			this._addClass(subtitle, 'subtitle')
 			subtitle.setAttribute('style', 'display: none')
 			this._addId(AM, 'AM')
+      moment.localeData()._meridiemParse  = this._changeUnicodeToChars(moment.localeData()._meridiemParse.toString())
 			//AM.textContent = 'AM'
       // Change to 'AM' to Locale Meridiem
-      AM.textContent = moment.langData()._meridiemParse.toString().replace(/\//g,"").split("|")[0];
+      AM.textContent = moment.localeData()._meridiemParse.toString().replace(/\//g,"").split("|")[0];
 			this._addId(PM, 'PM')
 			//PM.textContent = 'PM'
       // Change to 'PM' to Locale Meridiem
-      PM.textContent = moment.langData()._meridiemParse.toString().replace(/\//g,"").split("|")[1];
+      PM.textContent = moment.localeData()._meridiemParse.toString().replace(/\//g,"").split("|")[1];
 			// add them to title and subtitle
 			title.appendChild(hour)
 			title.appendChild(span)
@@ -1299,6 +1300,19 @@ class mdDateTimePicker {
 		this._sDialog.cancel.textContent = this._cancel
 		this._sDialog.ok.textContent = this._ok
 	}
+
+	/**
+	* [_changeUnicodeToChars Change unicode String to Pure String]
+	* @method _changeUnicodeToChars
+	*/
+	_changeUnicodeToChars(unicodeText) {
+    return unicodeText.replace(/\\u[\dA-F]{4}/gi,
+      function (match) {
+        return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+      });
+	}
+
+
 
 	/**
 	* [_getMonth get the next or previous month]
